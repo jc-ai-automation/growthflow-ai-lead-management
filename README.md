@@ -528,3 +528,88 @@ Salesperson takes action
 Opportunity moves forward
         ↓
 Resolve SLA Alert
+
+```
+## Weekly Performance Reporting
+
+GrowthFlow includes an automated management report that combines sales pipeline performance, client onboarding progress, and active SLA issues into a single Slack report.
+
+The report runs automatically every Monday morning.
+
+### Sales Metrics
+
+The report retrieves current GoHighLevel opportunities and calculates:
+
+- New opportunities created during the last 7 days
+- Total opportunities
+- Open opportunities
+- Won opportunities
+- Lost opportunities
+- Current open pipeline value
+- Won opportunity value
+- Current opportunity count by pipeline stage
+
+Pipeline stages included in the report are:
+
+- New Lead
+- Qualified
+- Discovery Call Booked
+- Discovery Call Completed
+- Proposal Sent
+- Won
+- Lost
+
+Opportunity retrieval uses pagination so reporting continues to work as the number of CRM opportunities grows.
+
+### Client Onboarding Metrics
+
+GrowthFlow retrieves current onboarding records from Airtable and summarizes clients by status:
+
+- New
+- In Progress
+- Waiting on Client
+- Ready
+- Completed
+
+This gives the team visibility into both sales activity and post-sale client operations.
+
+### SLA Visibility
+
+Active SLA alerts are also included in the report.
+
+For each active breach, the report can display:
+
+- Lead Name
+- Pipeline Stage
+- Hours in Stage
+- SLA Limit
+- Hours Overdue
+
+This makes stalled sales opportunities visible during regular management reporting instead of requiring someone to manually inspect the CRM.
+
+### Slack Management Report
+
+The final report is automatically formatted and delivered to Slack.
+
+Example structure:
+
+```text
+GROWTHFLOW WEEKLY PERFORMANCE REPORT
+
+SALES OVERVIEW
+New Opportunities
+Total Opportunities
+Open / Won / Lost Opportunities
+
+PIPELINE VALUE
+Open Pipeline Value
+Won Value
+
+PIPELINE STAGES
+Current opportunities by stage
+
+CLIENT ONBOARDING
+Clients by onboarding status
+
+ACTIVE SLA BREACHES
+Current unresolved sales SLA issues
