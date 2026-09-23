@@ -153,6 +153,73 @@ Slack provides real-time operational visibility for:
                     │ Team Alerts  │
                     └──────────────┘
 ```
+## Workflow Screenshots
+
+The following screenshots show the main components of the GrowthFlow system across GoHighLevel, n8n, Airtable, and Slack.
+
+### n8n Automation
+
+#### Main GrowthFlow Workflow
+
+The main n8n automation acts as the backend orchestration layer for GrowthFlow. It contains independent workflows for AI lead qualification, won-client onboarding, onboarding status synchronization, sales SLA monitoring, and weekly performance reporting.
+
+![GrowthFlow n8n Main Workflow](screenshots/growthflow-n8n-main.jpg)
+
+#### Centralized Error Handling
+
+A separate n8n error workflow captures failed production executions, prepares the relevant error information, and automatically routes the failure details to Slack for operational visibility.
+
+![GrowthFlow Error Handling Workflow](screenshots/error-handling.jpg)
+
+### GoHighLevel CRM and Sales Automation
+
+#### Sales Pipeline
+
+The GrowthFlow sales pipeline tracks opportunities across the complete sales lifecycle, from New Lead and Qualified through discovery calls, proposals, Won, and Lost outcomes.
+
+![GoHighLevel Opportunities](screenshots/ghl-opportunities.jpg)
+
+#### Contact Management
+
+GoHighLevel serves as the primary CRM, keeping lead and client information accessible to the sales team while n8n updates qualification and operational data through API integrations.
+
+![GoHighLevel Smart Lists](screenshots/ghl-smartlists.jpg)
+
+#### New Lead Intake
+
+The lead intake workflow captures new prospects, creates their sales opportunity, applies the appropriate CRM classification, and sends lead information to n8n for automated scoring and AI-assisted qualification.
+
+![New Lead Intake](screenshots/new-lead-intake.jpg)
+
+#### Lost Lead Recovery
+
+Lost opportunities are routed according to their recorded Lost Reason. Different recovery delays and follow-up strategies are used for situations such as budget limitations, timing, no response, or choosing another provider.
+
+![Lost Lead Recovery](screenshots/lost-lead-recovery.jpg)
+
+#### Client Won and Onboarding
+
+When an opportunity reaches Won, GoHighLevel begins the client handoff process by classifying the contact as a client, sending welcome communication, and passing the client data to n8n for operational onboarding.
+
+![Client Won Onboarding](screenshots/client-won-onboarding.jpg)
+
+### Airtable Client Operations
+
+GrowthFlow uses Airtable as its post-sale operational database. The three tables work together to maintain the client record, manage service-specific onboarding, and track unresolved sales SLA breaches.
+
+The **Clients** table stores the primary operational client record and links it back to the corresponding GoHighLevel contact. The **Onboarding** table tracks department assignment, required access, onboarding tasks, next steps, priority, and current onboarding status. The **SLA Alerts** table records sales opportunities that exceed their configured response thresholds and tracks each alert until it is resolved.
+
+![GrowthFlow Airtable Clients](screenshots/airtable-clients.jpg)
+
+![GrowthFlow Airtable Onboarding](screenshots/airtable-onboarding.jpg)
+
+![GrowthFlow Airtable SLA Alerts](screenshots/airtable-sla-alerts.jpg)
+
+#### Automation Error Alert
+
+The centralized error handling system was validated using a controlled production failure. The Slack notification identifies the affected workflow and failed node while providing the error message, additional details, execution ID, timestamp, and execution link for investigation.
+
+![GrowthFlow Error Alert](screenshots/error-handler.jpg)
 
 ## AI Lead Qualification and Scoring
 
