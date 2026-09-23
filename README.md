@@ -454,3 +454,77 @@ This allows the sales and account teams to see the client's current onboarding s
 When onboarding reaches Completed, GrowthFlow also sends an internal Slack notification so the account team knows the client can transition into ongoing service delivery.
 
 This prevents unnecessary follow-ups after a lead has re-engaged.
+
+## Sales SLA Monitoring
+
+GrowthFlow includes an independent SLA monitoring system that checks whether sales opportunities are remaining in important pipeline stages longer than expected.
+
+The monitor runs automatically on a schedule and retrieves current opportunities from GoHighLevel through the REST API.
+
+### SLA Rules
+
+| Pipeline Stage | Maximum Time |
+| --- | ---: |
+| New Lead | 4 hours |
+| Qualified | 8 hours |
+| Discovery Call Completed | 24 hours |
+
+Only open opportunities inside the GrowthFlow sales pipeline are monitored.
+
+Stages with their own dedicated automation, such as Proposal Sent, are excluded from SLA monitoring.
+
+## SLA Breach Detection
+
+For each monitored opportunity, n8n calculates how long the opportunity has remained in its current stage.
+
+When the configured SLA is exceeded, the system creates an SLA breach containing:
+
+- Opportunity ID
+- Contact ID
+- Lead Name
+- Pipeline Stage
+- Hours in Stage
+- SLA Limit
+- Hours Overdue
+- Alert Timestamp
+- Alert Status
+
+The breach is stored in Airtable and the sales team receives an immediate Slack notification.
+
+## Duplicate Alert Protection
+
+Before creating an SLA alert, GrowthFlow checks the existing active alerts in Airtable.
+
+A new alert is created only when there is no active alert for the same opportunity and pipeline stage.
+
+This prevents the hourly monitor from repeatedly notifying the team about the same unresolved issue.
+
+## Automatic SLA Resolution
+
+GrowthFlow also monitors existing active SLA alerts.
+
+For each alert, n8n retrieves the current opportunity from GoHighLevel.
+
+If the opportunity:
+
+- Moves out of the stage that caused the breach, or
+- Is no longer Open
+
+the corresponding SLA alert is automatically changed from Active to Resolved.
+
+This creates a complete monitoring lifecycle:
+
+```text
+Opportunity enters monitored stage
+        ↓
+SLA threshold exceeded
+        ↓
+Create SLA Alert
+        ↓
+Notify Sales Team
+        ↓
+Salesperson takes action
+        ↓
+Opportunity moves forward
+        ↓
+Resolve SLA Alert
