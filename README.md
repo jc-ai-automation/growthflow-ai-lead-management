@@ -341,4 +341,116 @@ Service Not Fit opportunities are excluded from automated recovery, while unclea
 This creates a structured recovery process without allowing automation to override human sales decisions.
 If the contact replies or books a discovery call, a separate exit workflow removes the lead from the nurture classification.
 
+## Won Client Handoff and Onboarding
+
+When an opportunity reaches the Won stage, GrowthFlow automatically transitions the client from the sales process into the operational onboarding system.
+
+### Automated Client Handoff
+
+The Won workflow:
+
+- Classifies the contact as a client
+- Sends the client welcome communication
+- Sends the client data from GoHighLevel to n8n
+- Normalizes the incoming client information
+- Checks Airtable for an existing client record
+- Prevents ordinary duplicate client creation
+- Generates internal client and onboarding IDs
+- Creates the client record
+- Routes the client according to the purchased service
+- Creates the appropriate onboarding record
+- Updates the onboarding status in GoHighLevel
+- Notifies the internal team through Slack
+
+This removes the need to manually transfer information from the sales CRM into the delivery system.
+
+## Duplicate Client Protection
+
+Before creating a new client, n8n searches Airtable using the GoHighLevel Contact ID.
+
+If the client already exists, the creation path stops.
+
+If no matching client exists, the onboarding process continues.
+
+This protects the operational database from ordinary duplicate webhook deliveries and repeated Won events.
+
+## Service Specific Onboarding
+
+GrowthFlow supports different onboarding requirements based on the service purchased.
+
+Supported routes include:
+
+- SEO
+- Paid Advertising
+- Social Media Management
+- Web Design
+- Marketing Automation
+- Multiple Services
+- Other
+
+Each route generates service-specific operational information including:
+
+- Responsible Department
+- Onboarding Priority
+- Required Access
+- Initial Onboarding Tasks
+- Recommended Next Step
+
+For example, an SEO client can be routed to the SEO team with requirements such as website CMS access, Google Analytics, Google Search Console, and an initial website audit.
+
+A Marketing Automation client can instead be routed to the Automation team with CRM access, email platform access, API requirements, workflow auditing, and implementation planning.
+
+This allows one onboarding architecture to support multiple agency services without forcing every client through the same process.
+
+## Airtable Client Operations
+
+Post-sale operational information is stored in a dedicated Airtable base.
+
+### Clients
+
+The Clients table maintains the primary operational client record, including:
+
+- Internal Client ID
+- GoHighLevel Contact ID
+- Client and company information
+- Purchased service
+- Marketing budget
+- Primary marketing goal
+- AI qualification information
+- Current onboarding status
+
+### Onboarding
+
+The Onboarding table stores the delivery-specific onboarding process, including:
+
+- Onboarding ID
+- Client ID
+- GoHighLevel Contact ID
+- Service
+- Responsible department
+- Priority
+- Required access
+- Onboarding tasks
+- Next step
+- Current status
+- Creation and modification timestamps
+
+## Bidirectional Onboarding Status Sync
+
+GrowthFlow does not leave onboarding status isolated inside Airtable.
+
+When the onboarding Status field changes, an independent n8n workflow detects the change and updates the corresponding GoHighLevel contact through the REST API.
+
+Supported statuses include:
+
+- New
+- In Progress
+- Waiting on Client
+- Ready
+- Completed
+
+This allows the sales and account teams to see the client's current onboarding state directly inside GoHighLevel while the delivery team continues working from Airtable.
+
+When onboarding reaches Completed, GrowthFlow also sends an internal Slack notification so the account team knows the client can transition into ongoing service delivery.
+
 This prevents unnecessary follow-ups after a lead has re-engaged.
