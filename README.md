@@ -55,3 +55,100 @@ Service-Specific Client Onboarding
 SLA Monitoring  
 ↓  
 Weekly Performance Reporting
+
+## System Architecture
+
+GrowthFlow uses a layered architecture where each platform has a specific responsibility.
+
+### GoHighLevel — CRM and Sales Layer
+
+GoHighLevel manages:
+
+- Lead capture through forms
+- Contact and custom field management
+- Sales opportunities and pipeline stages
+- Hot, Warm, and Cold lead routing
+- Discovery call scheduling
+- Appointment confirmation, cancellation, and no-show handling
+- Proposal follow-up
+- Cold lead nurture
+- Lost lead recovery
+- Client review requests
+
+### n8n — Automation and Orchestration Layer
+
+n8n manages:
+
+- Lead data normalization
+- Deterministic lead scoring
+- AI-assisted lead qualification
+- GoHighLevel REST API updates
+- Won-client handoff
+- Duplicate client protection
+- Service-specific onboarding routing
+- Airtable synchronization
+- Onboarding status synchronization back to GoHighLevel
+- Sales SLA monitoring
+- SLA breach resolution
+- Weekly performance reporting
+- Centralized workflow error handling
+
+### Airtable — Client Operations Layer
+
+Airtable stores operational data across:
+
+- Clients
+- Client Onboarding
+- SLA Alerts
+
+This separates post-sale service operations from the sales CRM while maintaining synchronization with GoHighLevel.
+
+### Slack — Internal Notification Layer
+
+Slack provides real-time operational visibility for:
+
+- New client onboarding
+- Completed onboarding
+- Sales SLA breaches
+- Weekly performance reports
+- Automation failures
+
+## Architecture Flow
+
+```text
+                    ┌─────────────────────┐
+                    │   Lead / Prospect   │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │    GoHighLevel      │
+                    │ Forms • CRM • Sales │
+                    └──────────┬──────────┘
+                               │ Webhook
+                               ▼
+                    ┌─────────────────────┐
+                    │        n8n          │
+                    │ Automation Engine   │
+                    └──────┬───────┬──────┘
+                           │       │
+                    REST API│       │Operations
+                           │       ▼
+                           │  ┌──────────────┐
+                           │  │   Airtable   │
+                           │  │ Client Ops   │
+                           │  └──────┬───────┘
+                           │         │
+                           ▼         │
+                    ┌──────────────┐ │
+                    │ GoHighLevel  │◄┘
+                    │ Status Sync  │
+                    └──────────────┘
+
+                           n8n
+                            │
+                            ▼
+                    ┌──────────────┐
+                    │    Slack     │
+                    │ Team Alerts  │
+                    └──────────────┘
