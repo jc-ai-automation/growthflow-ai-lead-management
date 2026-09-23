@@ -152,6 +152,7 @@ Slack provides real-time operational visibility for:
                     │    Slack     │
                     │ Team Alerts  │
                     └──────────────┘
+```
 
 ## AI Lead Qualification and Scoring
 
