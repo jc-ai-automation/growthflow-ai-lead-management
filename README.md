@@ -243,6 +243,102 @@ The nurture workflow:
 5. Sends a second follow-up
 6. Completes the nurture cycle if there is no engagement
 
+## Sales Pipeline and Appointment Automation
+
+GrowthFlow manages the sales journey through a structured GoHighLevel pipeline.
+
+### Sales Pipeline
+
+The pipeline contains the following stages:
+
+1. New Lead
+2. Qualified
+3. Discovery Call Booked
+4. Discovery Call Completed
+5. Proposal Sent
+6. Won
+7. Lost
+
+Automation handles routine stage transitions where appropriate, while important sales decisions remain under human control.
+
+For example, the system does not automatically move an opportunity to Proposal Sent. A salesperson sends the actual proposal and moves the opportunity when the action has genuinely occurred.
+
+## Discovery Call Management
+
+Qualified prospects can schedule a discovery call through the GrowthFlow booking calendar.
+
+When an appointment is confirmed, the system:
+
+- Moves the opportunity to Discovery Call Booked
+- Sends appointment confirmation
+- Sends scheduled reminders
+- Maintains the sales opportunity inside the correct pipeline stage
+
+Separate workflows handle different appointment outcomes.
+
+### Completed Discovery Call
+
+When a prospect attends the call:
+
+- The opportunity moves to Discovery Call Completed
+- The sales team receives an internal notification
+- The salesperson can review the conversation before deciding whether to prepare a proposal
+
+### No-Show
+
+If a prospect does not attend:
+
+- The contact is tagged as a no-show
+- The sales team is notified
+- The prospect receives a rebooking opportunity
+- A follow-up is sent if the prospect remains in the no-show state
+
+If the prospect later books another call, the no-show classification is automatically removed.
+
+### Cancelled Appointment
+
+If an appointment is cancelled:
+
+- Any existing no-show classification is removed
+- The prospect receives a rescheduling option
+- The sales team is notified
+
+The system does not automatically move the opportunity backward in the pipeline.
+
+## Proposal Follow-Up
+
+After a salesperson sends a proposal and manually moves the opportunity to Proposal Sent, GrowthFlow manages the follow-up sequence.
+
+The system:
+
+- Sends the initial proposal communication
+- Checks whether the opportunity remains in Proposal Sent
+- Sends a follow-up after the configured waiting period
+- Rechecks the opportunity before sending the final follow-up
+
+GrowthFlow does not automatically mark the opportunity as Lost after the sequence. The final sales outcome remains a human decision.
+
+## Lost Lead Recovery
+
+When an opportunity is marked Lost, GrowthFlow uses the recorded lost reason to determine the appropriate recovery strategy.
+
+Supported lost reasons include:
+
+- Budget Too Low
+- Not Ready
+- Timing
+- No Response
+- Chose Competitor
+- Service Not Fit
+- Other
+
+Recovery timing varies based on the reason. Leads may be revisited after shorter or longer waiting periods depending on the sales context.
+
+Before sending recovery communication, the workflow verifies that the opportunity is still Lost.
+
+Service Not Fit opportunities are excluded from automated recovery, while unclear or missing lost reasons are routed for internal review.
+
+This creates a structured recovery process without allowing automation to override human sales decisions.
 If the contact replies or books a discovery call, a separate exit workflow removes the lead from the nurture classification.
 
 This prevents unnecessary follow-ups after a lead has re-engaged.
