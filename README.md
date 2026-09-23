@@ -706,3 +706,99 @@ For production deployment, the system should use:
 - Client-approved test data before launch
 
 Secrets, API tokens, authentication credentials, and private integration keys should never be committed to the public repository.
+
+## Technology Stack
+
+| Technology | Role |
+| --- | --- |
+| GoHighLevel | CRM, sales pipeline, forms, appointments, email workflows, lead nurture |
+| n8n | Backend orchestration, business logic, API integration, monitoring and reporting |
+| Airtable | Client operations, onboarding management and SLA tracking |
+| Slack | Internal alerts, onboarding notifications and management reports |
+| AI / LLM | Contextual lead qualification, summaries and recommended actions |
+| REST APIs | Communication between n8n and GoHighLevel |
+| Webhooks | Event-driven data transfer from GoHighLevel to n8n |
+| Docker | Local self-hosted n8n environment |
+| Cloudflare Tunnel | Secure inbound webhook access during local development |
+
+## Project Highlights
+
+GrowthFlow demonstrates the design and implementation of a multi-system business automation rather than a single isolated workflow.
+
+Key capabilities include:
+
+- End-to-end lead lifecycle automation
+- Deterministic lead scoring combined with AI-assisted qualification
+- GoHighLevel CRM and pipeline automation
+- REST API integration between n8n and GoHighLevel
+- Hot, Warm and Cold lead routing
+- Discovery call lifecycle management
+- Proposal follow-up automation
+- Cold lead nurture and re-engagement handling
+- Lost lead recovery based on sales context
+- Automated Won-client handoff
+- Duplicate client protection
+- Service-specific onboarding
+- Bidirectional onboarding status synchronization
+- Sales SLA breach detection and automatic resolution
+- Duplicate SLA alert prevention
+- Paginated API data retrieval
+- Automated weekly management reporting
+- Centralized production error handling
+- Slack-based operational visibility
+- Human-controlled decision points for important sales actions
+
+## Repository Structure
+
+```text
+growthflow-ai-lead-management/
+│
+├── README.md
+│
+├── workflows/
+│   ├── growthflow-main-workflow.json
+│   └── growthflow-error-handler.json
+│
+├── screenshots/
+│   ├── ghl-sales-pipeline.png
+│   ├── ai-lead-qualification.png
+│   ├── client-onboarding.png
+│   ├── sla-monitoring.png
+│   ├── weekly-performance-report.png
+│   └── error-handler.png
+│
+└── docs/
+    └── architecture.md
+```
+
+The workflow exports included in this repository should contain sanitized configuration only. Credentials, authentication tokens, private integration keys, and production webhook URLs are excluded.
+
+## Business Value
+
+GrowthFlow is designed to reduce manual coordination between sales and service delivery teams.
+
+Instead of requiring staff to manually move information between a CRM, spreadsheets, onboarding systems, and internal communication tools, the system keeps these processes synchronized while notifying humans when their attention is required.
+
+The result is a workflow architecture designed around:
+
+- Faster lead response
+- Consistent sales follow-up
+- Reduced manual data entry
+- Structured client handoff
+- Service-specific onboarding
+- Visibility into stalled opportunities
+- Operational accountability
+- Centralized management reporting
+- Faster detection of automation failures
+
+## Project Status
+
+**Technical Build: Complete**
+
+The core GrowthFlow architecture and individual workflow components have been built and tested, including a controlled production failure used to validate centralized error handling.
+
+The current repository represents a portfolio implementation. Production deployment would require client-owned accounts, permanent infrastructure, production credentials, approved communication templates, and final environment-specific testing.
+
+## Author
+
+Built as an AI automation and CRM systems portfolio project using GoHighLevel and n8n.
