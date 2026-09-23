@@ -152,3 +152,96 @@ Slack provides real-time operational visibility for:
                     │    Slack     │
                     │ Team Alerts  │
                     └──────────────┘
+
+## AI Lead Qualification and Scoring
+
+GrowthFlow combines deterministic scoring with AI-assisted analysis instead of allowing the language model to make every qualification decision independently.
+
+When a new lead enters GoHighLevel, the lead data is sent to n8n for processing.
+
+### Deterministic Lead Scoring
+
+The system calculates a lead score from 0 to 100 using predefined business rules:
+
+| Factor | Maximum Score |
+| --- | ---: |
+| Monthly Marketing Budget | 40 |
+| Service Fit | 25 |
+| Primary Marketing Goal | 20 |
+| Lead Source | 10 |
+| Business Website | 5 |
+| **Total** | **100** |
+
+The calculated score determines the lead temperature:
+
+- **Hot:** 80–100
+- **Warm:** 50–79
+- **Cold:** 0–49
+
+This keeps numerical scoring predictable and auditable.
+
+### AI-Assisted Qualification
+
+After deterministic scoring, the normalized lead information is passed to an AI qualification step.
+
+The AI generates:
+
+- Qualification Status
+- AI Lead Summary
+- Recommended Action
+
+The AI does not overwrite the deterministic lead score or temperature classification.
+
+This separation allows GrowthFlow to use AI for contextual analysis while keeping important scoring logic controlled by explicit business rules.
+
+### CRM Synchronization
+
+The qualification results are written back to the GoHighLevel contact through the REST API.
+
+The CRM is updated with:
+
+- AI Lead Score
+- Lead Temperature
+- Qualification Status
+- AI Lead Summary
+- Recommended Action
+
+GoHighLevel can then use these fields to trigger the appropriate sales workflow.
+
+## Intelligent Lead Routing
+
+Qualified leads are routed according to their calculated temperature.
+
+### Hot Leads
+
+Hot leads receive immediate attention:
+
+- Opportunity moves to Qualified
+- Internal sales notification is generated
+- Lead receives a discovery call invitation
+- Sales team can prioritize immediate outreach
+
+### Warm Leads
+
+Warm leads receive:
+
+- Qualified pipeline routing
+- Internal sales notification
+- Standard follow-up communication
+
+### Cold Leads
+
+Cold leads enter a dedicated nurture sequence instead of being discarded.
+
+The nurture workflow:
+
+1. Waits before the first follow-up
+2. Checks whether the lead is still classified for nurture
+3. Sends the first nurture email
+4. Rechecks the lead before additional communication
+5. Sends a second follow-up
+6. Completes the nurture cycle if there is no engagement
+
+If the contact replies or books a discovery call, a separate exit workflow removes the lead from the nurture classification.
+
+This prevents unnecessary follow-ups after a lead has re-engaged.
