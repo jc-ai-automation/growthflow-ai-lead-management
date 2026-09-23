@@ -613,3 +613,96 @@ Clients by onboarding status
 
 ACTIVE SLA BREACHES
 Current unresolved sales SLA issues
+
+```
+## Reliability, Safeguards and Error Handling
+
+GrowthFlow includes multiple safeguards designed to make the automation more reliable in real business operations.
+
+### Centralized Error Handling
+
+The n8n automation uses a dedicated error workflow:
+
+`GrowthFlow | Error Handler`
+
+When a production execution fails, n8n sends the failure to the centralized error handler.
+
+The error workflow captures:
+
+- Workflow Name
+- Failed Node
+- Error Message
+- Error Details
+- Execution ID
+- Failure Timestamp
+- Execution Link
+
+A formatted alert is then sent to Slack so automation failures can be investigated without relying on someone manually checking n8n execution history.
+
+The error handling system was validated using a controlled production failure to confirm that failed executions correctly trigger the Slack alert.
+
+### Duplicate Client Protection
+
+Before creating a client in Airtable, GrowthFlow checks whether the GoHighLevel Contact ID already exists.
+
+Existing clients are prevented from entering the client creation path again.
+
+### Duplicate SLA Alert Protection
+
+The SLA monitor checks existing active alerts before creating a new breach.
+
+This prevents scheduled monitoring from repeatedly creating alerts for the same opportunity and stage.
+
+### Pagination Handling
+
+Opportunity retrieval workflows support paginated GoHighLevel API responses.
+
+Pagination is implemented in both:
+
+- SLA Monitoring
+- Weekly Performance Reporting
+
+This prevents the system from silently ignoring opportunities once the CRM grows beyond a single API response page.
+
+### Conditional Rechecks
+
+Long-running sales workflows recheck the current state before taking delayed actions.
+
+Examples include:
+
+- Proposal follow-up verifies that the opportunity is still in Proposal Sent
+- Lost lead recovery verifies that the opportunity is still Lost
+- Cold lead nurture verifies that the nurture classification is still active
+- SLA resolution retrieves the current opportunity state before resolving an alert
+
+These checks reduce the risk of delayed automation acting on outdated information.
+
+### Human Decision Points
+
+GrowthFlow intentionally keeps important sales decisions under human control.
+
+Automation does not independently:
+
+- Decide that a proposal has actually been sent
+- Mark an opportunity Lost after follow-up
+- Determine the final outcome of a sales conversation
+- Move opportunities backward after appointment cancellation
+
+Instead, automation handles repetitive follow-up, synchronization, monitoring, and notifications around those decisions.
+
+## Production Deployment Considerations
+
+The portfolio version of GrowthFlow was developed using a self-hosted local n8n environment with secure tunneling for inbound webhook testing.
+
+For production deployment, the system should use:
+
+- A persistent n8n server or VPS
+- A stable HTTPS domain
+- Permanent production webhook URLs
+- Client-owned GoHighLevel credentials and API access
+- Client-owned Airtable and Slack connections
+- A configured business review destination
+- Production-approved email and notification recipients
+- Client-approved test data before launch
+
+Secrets, API tokens, authentication credentials, and private integration keys should never be committed to the public repository.
