@@ -748,30 +748,6 @@ Key capabilities include:
 - Slack-based operational visibility
 - Human-controlled decision points for important sales actions
 
-## Repository Structure
-
-```text
-growthflow-ai-lead-management/
-│
-├── README.md
-│
-├── workflows/
-│   ├── growthflow-main-workflow.json
-│   └── growthflow-error-handler.json
-│
-├── screenshots/
-│   ├── ghl-sales-pipeline.png
-│   ├── ai-lead-qualification.png
-│   ├── client-onboarding.png
-│   ├── sla-monitoring.png
-│   ├── weekly-performance-report.png
-│   └── error-handler.png
-│
-└── docs/
-    └── architecture.md
-```
-
-The workflow exports included in this repository should contain sanitized configuration only. Credentials, authentication tokens, private integration keys, and production webhook URLs are excluded.
 
 ## Business Value
 
